@@ -6,7 +6,7 @@ A lightweight Discord utility bot designed for running 24/7 on a Raspberry Pi.
 
 ## Features
 
-- **Custom Prefixes:** Supports server-specific prefixes stored securely in SQLite.
+- **Custom Prefixes:** Supports server specific prefixes stored securely in SQLite.
 - **Moderation Tools:** Includes channel management and security utilities.
 - **Census Integration:** Tracks character data and name changes using external game APIs.
 
@@ -38,7 +38,7 @@ Node.js v18+
 Git
 
 ## Clone the Repository
-git clone [https://github.com/jl6/bot.git](https://github.com/jl6/bot.git)
+git clone [https://github.com/jl6/Glep.git](https://github.com/jl6/Glep.git)
 cd bot
 
 ## Install Dependencies
