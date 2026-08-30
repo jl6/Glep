@@ -17,6 +17,10 @@ module.exports = {
       const u = await client.users.fetch(uid, { force: true });
       const ts = Math.floor(u.createdTimestamp / 1000);
 
+      const msInDay = 1000 * 60 * 60 * 24;
+      const createdDaysAgo = Math.floor((Date.now() - u.createdTimestamp) / msInDay);
+      const createdYearsAgo = (createdDaysAgo / 365.25).toFixed(1);
+
       const embed = new EmbedBuilder()
         .setTitle(u.username)
         .setThumbnail(u.displayAvatarURL({ size: 256 }))
@@ -25,7 +29,7 @@ module.exports = {
           { name: 'Username', value: u.username, inline: true },
           { name: 'Display Name', value: u.globalName || 'None', inline: true },
           { name: 'ID', value: u.id, inline: true },
-          { name: 'Created', value: `<t:${ts}:F> (<t:${ts}:R>)`, inline: false },
+          { name: 'Created', value: `<t:${ts}:F>\n${createdDaysAgo} days ago (${createdYearsAgo} years ago)`, inline: false },
           { name: 'Type', value: u.bot ? 'Bot' : 'User', inline: true }
         )
         .setTimestamp();
