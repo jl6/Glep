@@ -15,60 +15,20 @@ A lightweight Discord utility bot designed for running 24/7 on a Raspberry Pi.
 ## Project Structure
 
 ```text
-Discord-Bot/
+Glep/
 ├── database
-│   └── data.db
-├── notes
-│   └── trigger.js
 └── src
     ├── core
     │   ├── commands
-    │   │   ├── bot
-    │   │   │   ├── help.js
-    │   │   │   └── ping.js
-    │   │   ├── channels
-    │   │   │   └── nuke.js
-    │   │   ├── dcuo
-    │   │   │   ├── tarcker
-    │   │   │   │   ├── history.js
-    │   │   │   │   ├── track.js
-    │   │   │   │   ├── tracked.js
-    │   │   │   │   ├── trackedrefresh.js
-    │   │   │   │   └── untrack.js
-    │   │   │   ├── character.js
-    │   │   │   ├── name.js
-    │   │   │   ├── raw.js
-    │   │   │   └── stats.js
-    │   │   ├── dev
-    │   │   │   └── tree.js
-    │   │   └── setups
-    │   │       ├── dmamod.js
-    │   │       ├── prefix.js
-    │   │       ├── selfbot.js
-    │   │       ├── shield.js
-    │   │       └── voicehub.js
     │   └── events
     │       ├── client
-    │       │   └── ready.js
     │       ├── guild
     │       │   ├── channels
-    │       │   │   └── channelDelete.js
     │       │   ├── interactions
-    │       │   │   └── interactionCreate.js
     │       │   ├── messages
-    │       │   │   ├── DMaModMessageCreate.js
-    │       │   │   └── messageCreate.js
     │       │   └── voice
-    │       │       └── voiceStateUpdate.js
     │       └── handlers
-    │           └── dmHandler.js
     ├── utils
-    │   ├── commandHandler.js
-    │   ├── dmaMod.js
-    │   ├── selfbotHandler.js
-    │   ├── shieldHandler.js
-    │   ├── trackerHandler.js
-    │   └── voiceHubHandler.js
     └── index.js
 ``` 
 
