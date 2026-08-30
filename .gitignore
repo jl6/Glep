@@ -1,0 +1,10 @@
+# BOT
+*package-lock.json
+*package.json
+*node_modules/
+*database/
+*.DS_Store
+*notes/
+*.env
+*.db
+
