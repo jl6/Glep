@@ -13,7 +13,7 @@ module.exports = {
       return msg.reply('Missing permissions: Administrator required.');
     }
 
-    const dbPath = path.join(__dirname, '../../../../database/data.db');
+    const dbPath = path.join(__dirname, '../../../../../database/data.db');
 
     try {
       if (fs.existsSync(dbPath)) {
