@@ -4,7 +4,6 @@ module.exports = {
     name: 'addemoji',
     description: 'Inspects and adds custom emojis to the server',
     usage: 'addemoji <emoji>',
-    category: 'tools',
     selfClean: 15000,
     async execute(msg, args) {
         if (!msg.member.permissions.has(PermissionFlagsBits.ManageGuildExpressions)) {
