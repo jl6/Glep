@@ -1,9 +1,14 @@
 const Database = require('better-sqlite3');
 const path = require('path');
+const fs = require('fs');
 const { EmbedBuilder } = require('discord.js');
 
-const dbPath = path.join(process.cwd(), 'database', 'data.db');
-const db = new Database(dbPath);
+const dir = path.join(process.cwd(), 'database');
+if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+}
+
+const db = new Database(path.join(dir, 'data.db'));
 
 module.exports = {
     name: 'help',

@@ -1,6 +1,7 @@
 const { checkShield } = require('../../../../../src/utils/shieldHandler');
 const { checkSelfBot } = require('../../../../../src/utils/selfbotHandler');
 const { handleCommand } = require('../../../../../src/utils/commandHandler');
+const { checkSticky } = require('../../../../../src/utils/stickyHandler');
 
 module.exports = {
     name: 'messageCreate',
@@ -8,6 +9,7 @@ module.exports = {
         if (!msg.guild || msg.author.bot) return;
         if (await checkShield(msg)) return;
         if (await checkSelfBot(msg)) return;
+        await checkSticky(msg);
         await handleCommand(msg, client);
     }
 };
