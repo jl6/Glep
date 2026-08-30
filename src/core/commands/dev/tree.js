@@ -1,19 +1,32 @@
 const fs = require('fs');
 const path = require('path');
 
-const IGNORE = ['node_modules', '.git', '.DS_Store', 'package-lock.json', 'package.json', 'notes.txt', '.env','.gitignore', 'readme.md', 'notes', 'LICENSE'];
+const IGNORE = [
+    'node_modules', '.git', '.DS_Store', 'package-lock.json', 
+    'package.json', 'notes.txt', '.env', '.gitignore', 
+    'readme.md', 'notes', 'LICENSE'
+];
 
 function walk(dir, prefix = '') {
     let out = '';
-    const list = fs.readdirSync(dir, { withFileTypes: true }).filter(x => !IGNORE.includes(x.name));
+    const list = fs.readdirSync(dir, { withFileTypes: true })
+        .filter(x => !IGNORE.includes(x.name));
 
-    list.sort((a, b) => a.isDirectory() === b.isDirectory() ? a.name.localeCompare(b.name) : a.isDirectory() ? -1 : 1);
+    list.sort((a, b) => {
+        if (a.isDirectory() === b.isDirectory()) {
+            return a.name.localeCompare(b.name);
+        }
+        return a.isDirectory() ? -1 : 1;
+    });
 
-    list.forEach((item, i) => {
-        const last = i === list.length - 1;
-        out += `${prefix}${last ? '└── ' : '├── '}${item.name}\n`;
+    list.forEach((item, idx) => {
+        const isLast = idx === list.length - 1;
+        const pointer = isLast ? '└── ' : '├── ';
+        out += `${prefix}${pointer}${item.name}\n`;
+        
         if (item.isDirectory()) {
-            out += walk(path.join(dir, item.name), prefix + (last ? '    ' : '│   '));
+            const nextPrefix = prefix + (isLast ? '    ' : '│   ');
+            out += walk(path.join(dir, item.name), nextPrefix);
         }
     });
 
@@ -30,7 +43,16 @@ module.exports = {
         const data = `${path.basename(root)}/\n` + walk(root);
 
         if (data.length > 1900) {
-            return msg.reply('Output too large.');
+            const file = Buffer.from(data, 'utf-8');
+            const reply = await msg.reply({
+                content: 'Output exceeds message length limit. Attached as file.',
+                files: [{ attachment: file, name: 'tree.txt' }]
+            });
+
+            if (this.selfClean) {
+                setTimeout(() => reply.delete().catch(() => {}), this.selfClean);
+            }
+            return;
         }
 
         const reply = await msg.reply(`\`\`\`text\n${data}\`\`\``);
