@@ -3,6 +3,7 @@ const { PermissionFlagsBits, ChannelType } = require('discord.js');
 module.exports = {
   name: 'createchannel',
   description: 'Creates a text or voice channel.',
+  Usage: '[text|voice]',
   selfClean: 9000,
   
   async execute(msg, args, client, db) {
