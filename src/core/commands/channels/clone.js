@@ -3,6 +3,7 @@ const { EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 module.exports = {
     name: 'clone',
     description: 'Duplicates the current channel.',
+    selfClean: 9000,
     
     async execute(msg, args, client, db) {
         if (!msg.member.permissions.has(PermissionFlagsBits.ManageChannels)) {
