@@ -1,7 +1,8 @@
-const { checkShield } = require('../../../../../src/utils/shieldHandler');
-const { checkSelfBot } = require('../../../../../src/utils/selfbotHandler');
-const { handleCommand } = require('../../../../../src/utils/commandHandler');
-const { checkSticky } = require('../../../../../src/utils/stickyHandler');
+const { checkShield } = require('../../../../utils/shieldHandler');
+const { checkSelfBot } = require('../../../../utils/selfbotHandler');
+const { handleCommand } = require('../../../../utils/commandHandler');
+const { checkSticky } = require('../../../../utils/stickyHandler');
+const afkHandler = require('../../../../utils/afkHandler');
 
 module.exports = {
     name: 'messageCreate',
@@ -10,6 +11,7 @@ module.exports = {
         if (await checkShield(msg)) return;
         if (await checkSelfBot(msg)) return;
         await checkSticky(msg);
+        await afkHandler(msg);
         await handleCommand(msg, client);
     }
 };
