@@ -1,6 +1,7 @@
 const path = require('path');
 const { initializeDmaModSession, handleToggleOn, handleToggleOff, handleCloseChannel } = require(path.join(process.cwd(), 'src/utils/dmaMod'));
 const { handleVoiceHubInteraction } = require(path.join(process.cwd(), 'src/utils/voiceHubHandler'));
+const { handleAutoroleButton, handleAutoroleSetup } = require(path.join(process.cwd(), 'src/utils/selfroleHandler'));
 
 module.exports = {
     name: 'interactionCreate',
@@ -13,6 +14,15 @@ module.exports = {
             if (i.customId === 'dmamod_toggle_off') return handleToggleOff(i);
             if (i.customId === 'dmamod_close_channel') return handleCloseChannel(i, client);
             if (await handleVoiceHubInteraction(i)) return;
+            if (await handleAutoroleButton(i)) return;
+        }
+
+        if (i.isRoleSelectMenu() && i.customId === 'autorole_setup_select') {
+            if (await handleAutoroleSetup(i)) return;
+        }
+
+        if (i.isModalSubmit() && i.customId === 'autorole_modal_submit') {
+            if (await handleAutoroleSetup(i)) return;
         }
 
         if (i.isStringSelectMenu() && i.customId === 'dmamod_select_guild') {
