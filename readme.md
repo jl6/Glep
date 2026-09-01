@@ -64,3 +64,7 @@ node src/index.js
 # Production (PM2):
 
 pm2 start src/index.js --name "bot"
+
+## Community & Contact
+[![Discord](https://img.shields.io/badge/Discord-User--ID-18181b?style=flat-square&logo=discord&logoColor=white)](https://discordapp.com/users/289147116767412224)
+[![Support Server](https://img.shields.io/badge/Join-Support--Server-18181b?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/48t5FWHw4S)
