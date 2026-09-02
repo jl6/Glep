@@ -4,24 +4,17 @@
 [![Discord](https://img.shields.io/badge/Discord-User--ID-18181b?style=flat-square&logo=discord&logoColor=white)](https://discordapp.com/users/289147116767412224)
 [![Support Server](https://img.shields.io/badge/Join-Support--Server-18181b?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/48t5FWHw4S)
 
-
-A Simple Discord utility bot designed for running 24/7 on a Raspberry Pi.
+A simple Discord utility bot designed for running 24/7 on a Raspberry Pi.
 
 ---
 
 ## Features
 
-- **Custom Prefixes:** Traditional command handling that can be change to your needs.
-
-- **Moderation Tools:** Includes channel management and security utilities like spam links, spam messages and pictures and also basic moderation commands like, kick, ban, warn etc also QR code generation, AFK management, sticky messages and reaction roles.
-
-- **Census Integration:** Tracks character data and name changes using external game APIs.
-
-- **Voice Hubs**: Dynamic creation and teardown of temporary voice channels for community management.
-
-- **DCUO Integration**: Lookup palyers stats, check for names avilable and track players by hash this will allow to keep a 100% acurate scammer name changes since hash won't change.
-
-
+- **Custom Prefixes:** Traditional command handling that can be changed to fit your server's needs.
+- **Moderation & Shields:** Essential moderation commands (ban, kick, warn, unban) paired with automated security shields for filtering links, spam, and media.
+- **DCUO Census Integration:** Track player stats, check name availability, and monitor characters by unique hash IDs to accurately log scammer name changes.
+- **Voice Hubs:** Dynamic creation and teardown of temporary voice channels for community management.
+- **Tools & Utilities:** Includes AFK tracking, QR code generation, sticky messages, custom commands, and reaction roles.
 
 ---
 
@@ -134,8 +127,6 @@ Glep/
     │   ├── selfbotHandler.js
     │   ├── selfroleHandler.js
     │   ├── shieldHandler.js
-    │   ├── stickyHandler.js
     │   ├── trackerHandler.js
     │   └── voiceHubHandler.js
     └── index.js
-```
