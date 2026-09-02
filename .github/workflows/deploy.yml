@@ -1,0 +1,21 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull Latest Code Safely
+        run: |
+          cd ~/Glep
+          git stash
+          git pull origin main
+          git stash pop || true
+          npm install
+
+      - name: Restart Bot with PM2
+        run: |
+          pm2 restart glep-bot
