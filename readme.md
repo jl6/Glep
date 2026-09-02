@@ -16,54 +16,118 @@ A lightweight Discord utility bot designed for running 24/7 on a Raspberry Pi.
 
 ```text
 Glep/
+├── .github
+│   └── workflows
+│       └── deploy.yml
 ├── database
+│   ├── data.db
+│   ├── db.js
+│   └── moderation.js
 └── src
     ├── core
     │   ├── commands
+    │   │   ├── bot
+    │   │   │   ├── server
+    │   │   │   │   ├── lserver.js
+    │   │   │   │   ├── map.js
+    │   │   │   │   ├── serverinvite.js
+    │   │   │   │   └── servers.js
+    │   │   │   ├── help.js
+    │   │   │   ├── invite.js
+    │   │   │   └── ping.js
+    │   │   ├── channels
+    │   │   │   ├── clear.js
+    │   │   │   ├── clone.js
+    │   │   │   ├── createcategory.js
+    │   │   │   ├── createchannel.js
+    │   │   │   ├── deletechannel.js
+    │   │   │   ├── nuke.js
+    │   │   │   └── pin.js
+    │   │   ├── dcuo
+    │   │   │   ├── tarcker
+    │   │   │   │   ├── history.js
+    │   │   │   │   ├── track.js
+    │   │   │   │   ├── tracked.js
+    │   │   │   │   ├── trackedrefresh.js
+    │   │   │   │   └── untrack.js
+    │   │   │   ├── character.js
+    │   │   │   ├── name.js
+    │   │   │   ├── raw.js
+    │   │   │   └── stats.js
+    │   │   ├── dev
+    │   │   │   ├── db
+    │   │   │   │   ├── dbstats.js
+    │   │   │   │   └── wipedb.js
+    │   │   │   ├── gstats.js
+    │   │   │   ├── tree.js
+    │   │   │   └── uptime.js
+    │   │   ├── moderation
+    │   │   │   ├── ban.js
+    │   │   │   ├── kick.js
+    │   │   │   ├── modhistory.js
+    │   │   │   ├── unban.js
+    │   │   │   ├── unwarn.js
+    │   │   │   └── warn.js
+    │   │   ├── roles
+    │   │   │   ├── addrole.js
+    │   │   │   ├── crole.js
+    │   │   │   ├── dallroles.js
+    │   │   │   ├── drole.js
+    │   │   │   ├── listroles.js
+    │   │   │   ├── roleinfo.js
+    │   │   │   └── rrole.js
+    │   │   ├── setups
+    │   │   │   ├── customcmd.js
+    │   │   │   ├── dmamod.js
+    │   │   │   ├── prefix.js
+    │   │   │   ├── selfbot.js
+    │   │   │   ├── selfrole.js
+    │   │   │   ├── shield.js
+    │   │   │   └── voicehub.js
+    │   │   ├── tools
+    │   │   │   ├── addemojis.js
+    │   │   │   ├── afk.js
+    │   │   │   ├── avatar.js
+    │   │   │   ├── emojilist.js
+    │   │   │   ├── qr.js
+    │   │   │   ├── remind.js
+    │   │   │   ├── say.js
+    │   │   │   ├── serverinfo.js
+    │   │   │   └── sticky.js
+    │   │   └── user
+    │   │       ├── nickname.js
+    │   │       ├── userinfo.js
+    │   │       └── userlookup.js
     │   └── events
     │       ├── client
+    │       │   └── ready.js
     │       ├── guild
     │       │   ├── channels
+    │       │   │   └── channelDelete.js
     │       │   ├── interactions
+    │       │   │   └── interactionCreate.js
     │       │   ├── messages
+    │       │   │   ├── DMaModMessageCreate.js
+    │       │   │   └── messageCreate.js
     │       │   └── voice
+    │       │       └── voiceStateUpdate.js
     │       └── handlers
+    │           └── dmHandler.js
     ├── utils
+    │   ├── afkHandler.js
+    │   ├── commandHandler.js
+    │   ├── costumecHandler.js
+    │   ├── dmaMod.js
+    │   ├── selfbotHandler.js
+    │   ├── selfroleHandler.js
+    │   ├── shieldHandler.js
+    │   ├── stickyHandler.js
+    │   ├── trackerHandler.js
+    │   └── voiceHubHandler.js
     └── index.js
 ``` 
 
-## Setup & Installation
-Prerequisites
-Node.js v18+
-Git
 
-## Clone the Repository
-git clone [https://github.com/jl6/Glep.git](https://github.com/jl6/Glep.git)
-cd bot
-
-## Install Dependencies
-npm install
-
-## Environment Configuration
-Create a .env file in the root directory:
-<br> 
-
-TOKEN=your_token_here <br> 
-PREFIX=! <br> 
-CENSUS_SERVICE_ID=your_census_id_here <br> 
-WEBHOOK_URL=your_webhook_url_here <br> 
-SPECIAL_IDS=comma_separated_user_ids <br> 
-DEV_IDS=comma_separated_dev_ids
-
-
-## Running the Bot
-
-node src/index.js
-
-
-# Production (PM2):
-
-pm2 start src/index.js --name "bot"
 
 ## Community & Contact
 [![Discord](https://img.shields.io/badge/Discord-User--ID-18181b?style=flat-square&logo=discord&logoColor=white)](https://discordapp.com/users/289147116767412224)
