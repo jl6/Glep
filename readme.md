@@ -11,9 +11,17 @@ A Simple Discord utility bot designed for running 24/7 on a Raspberry Pi.
 
 ## Features
 
-- **Custom Prefixes:** Supports server specific prefixes stored securely in SQLite.
-- **Moderation Tools:** Includes channel management and security utilities.
+- **Custom Prefixes:** Traditional command handling that can be change to your needs.
+
+- **Moderation Tools:** Includes channel management and security utilities like spam links, spam messages and pictures and also basic moderation commands like, kick, ban, warn etc also QR code generation, AFK management, sticky messages and reaction roles.
+
 - **Census Integration:** Tracks character data and name changes using external game APIs.
+
+- **Voice Hubs**: Dynamic creation and teardown of temporary voice channels for community management.
+
+- **DCUO Integration**: Lookup palyers stats, check for names avilable and track players by hash this will allow to keep a 100% acurate scammer name changes since hash won't change.
+
+
 
 ---
 
