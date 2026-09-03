@@ -12,6 +12,7 @@ A simple Discord utility bot designed for running 24/7 on a Raspberry Pi.
 
 - **Custom Prefixes:** Traditional command handling that can be changed to fit your server's needs.
 - **Moderation & Shields:** Essential moderation commands (ban, kick, warn, unban) paired with automated security shields for filtering links, spam, and media.
+- **Welcome System:** Configurable canvas welcome cards, plain text greetings, leave notices, and direct message alerts managed through interactive setup buttons.
 - **DCUO Census Integration:** Track player stats, check name availability, and monitor characters by unique hash IDs to accurately log scammer name changes.
 - **Voice Hubs:** Dynamic creation and teardown of temporary voice channels for community management.
 - **Tools & Utilities:** Includes AFK tracking, QR code generation, sticky messages, custom commands, and reaction roles.
@@ -28,7 +29,8 @@ Glep/
 ├── database
 │   ├── data.db
 │   ├── db.js
-│   └── moderation.js
+│   ├── moderation.js
+│   └── welcomedb.js
 └── src
     ├── core
     │   ├── commands
@@ -89,7 +91,8 @@ Glep/
     │   │   │   ├── selfbot.js
     │   │   │   ├── selfrole.js
     │   │   │   ├── shield.js
-    │   │   │   └── voicehub.js
+    │   │   │   ├── voicehub.js
+    │   │   │   └── welcome.js
     │   │   ├── tools
     │   │   │   ├── addemojis.js
     │   │   │   ├── afk.js
@@ -112,6 +115,9 @@ Glep/
     │       │   │   └── channelDelete.js
     │       │   ├── interactions
     │       │   │   └── interactionCreate.js
+    │       │   ├── members
+    │       │   │   ├── guildMemberAdd.js
+    │       │   │   └── guildMemberRemove.js
     │       │   ├── messages
     │       │   │   ├── DMaModMessageCreate.js
     │       │   │   └── messageCreate.js
@@ -127,6 +133,8 @@ Glep/
     │   ├── selfbotHandler.js
     │   ├── selfroleHandler.js
     │   ├── shieldHandler.js
+    │   ├── stickyHandler.js
     │   ├── trackerHandler.js
-    │   └── voiceHubHandler.js
+    │   ├── voiceHubHandler.js
+    │   └── welcomecardHandler.js
     └── index.js
