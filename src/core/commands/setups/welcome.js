@@ -1,6 +1,6 @@
 // src/core/commands/setups/welcome.js
 const path = require('path');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } = require('discord.js');
 const db = require(path.join(process.cwd(), 'database', 'welcomedb'));
 
 module.exports = {
@@ -25,12 +25,22 @@ module.exports = {
             )
         ];
 
-        const text = () => {
+        const embed = () => {
             const conf = db.get(msg.guild.id) || {};
-            return `Settings:\nChannel: <#${conf.channel_id || 'None'}>\nType: ${conf.type || 'image'}\nWelcome: ${conf.welcome_msg || 'Default'}\nLeave: ${conf.leave_msg || 'Default'}\nDM Welcome: ${conf.dm_welcome || 'None'}\nDM Leave: ${conf.dm_leave || 'None'}`;
+            return new EmbedBuilder()
+                .setTitle('Welcome Configuration')
+                .setColor(0x2b2d31)
+                .addFields(
+                    { name: 'Channel', value: conf.channel_id ? `<#${conf.channel_id}>` : 'None', inline: true },
+                    { name: 'Type', value: conf.type || 'image', inline: true },
+                    { name: 'Welcome Msg', value: conf.welcome_msg || 'Default', inline: false },
+                    { name: 'Leave Msg', value: conf.leave_msg || 'Default', inline: false },
+                    { name: 'DM Welcome', value: conf.dm_welcome || 'None', inline: false },
+                    { name: 'DM Leave', value: conf.dm_leave || 'None', inline: false }
+                );
         };
 
-        const reply = await msg.reply({ content: text(), components: rows() });
+        const reply = await msg.reply({ embeds: [embed()], components: rows() });
         const filter = i => i.user.id === msg.author.id;
         const collector = reply.createMessageComponentCollector({ filter, time: 60000 });
 
@@ -39,13 +49,13 @@ module.exports = {
 
             if (i.customId === 'wel_wipe') {
                 db.remove(msg.guild.id);
-                return i.update({ content: 'Settings wiped.', components: [] });
+                return i.update({ content: 'Settings wiped.', embeds: [], components: [] });
             }
 
             if (i.customId === 'wel_type') {
                 const next = (conf.type || 'image') === 'image' ? 'text' : 'image';
                 db.set({ guild_id: msg.guild.id, type: next });
-                return i.update({ content: text(), components: rows() });
+                return i.update({ embeds: [embed()], components: rows() });
             }
 
             if (i.customId === 'wel_ch') {
@@ -56,7 +66,7 @@ module.exports = {
                 const ch = collected.first().mentions.channels.first();
                 db.set({ guild_id: msg.guild.id, channel_id: ch.id });
                 await i.followUp({ content: `Channel set to <#${ch.id}>`, flags: 64 });
-                return reply.edit({ content: text(), components: rows() }).catch(() => {});
+                return reply.edit({ embeds: [embed()], components: rows() }).catch(() => {});
             }
 
             const map = {
@@ -88,7 +98,7 @@ module.exports = {
 
             db.set({ guild_id: msg.guild.id, [target.field]: val });
             await sub.reply({ content: 'Updated.', flags: 64 });
-            await reply.edit({ content: text(), components: rows() }).catch(() => {});
+            await reply.edit({ embeds: [embed()], components: rows() }).catch(() => {});
         });
     }
 };
