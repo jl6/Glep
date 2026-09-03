@@ -6,7 +6,7 @@ const db = new Database(path.join(process.cwd(), 'database', 'data.db'));
 const handleCommand = async (msg, client) => {
     if (msg.author.bot || !msg.guild) return;
 
-    let pfx = process.env.PREFIX || '!';
+    let pfx = process.env.PREFIX || '_';
     const row = db.prepare('SELECT prefix FROM guild_settings WHERE guild_id = ?').get(msg.guild.id);
     if (row?.prefix) pfx = row.prefix;
 
