@@ -1,10 +1,12 @@
-const { PermissionFlagsBits } = require('discord.js');
-const db = require('../../../../database/moderation');
+const path = require('path');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const db = require(path.join(process.cwd(), 'database', 'moderation'));
+const { sendLog } = require(path.join(process.cwd(), 'src', 'utils', 'logHandler.js'));
 
 module.exports = {
     name: 'warn',
     description: 'Warn a member in the server',
-    usage: '[user] [reason]',
+    usage: '@user [reason]',
     async execute(msg, args) {
         if (!msg.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
             return msg.reply('Missing permissions');
@@ -31,6 +33,13 @@ module.exports = {
                 if (err) console.error('Failed to log warn:', err);
             });
         }
+
+        const embed = new EmbedBuilder()
+            .setTitle('User Warned')
+            .setDescription(`**User:** <@${member.id}>\n**Moderator:** <@${msg.author.id}>\n**Reason:** ${reason}`)
+            .setColor(0xffff00)
+            .setTimestamp();
+        await sendLog(msg.guild, 'warn', embed);
 
         msg.channel.send('User warned');
     }

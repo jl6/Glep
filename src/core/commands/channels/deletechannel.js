@@ -3,8 +3,7 @@ const { PermissionFlagsBits } = require('discord.js');
 module.exports = {
   name: 'deletechannel',
   description: 'Deletes a channel.',
-  Usage: '[#channel | ID | name]',
-  selfClean: 9000,
+  usage: '[#channel | ID | name]',
   
   async execute(msg, args, client, db) {
     if (!msg.member.permissions.has(PermissionFlagsBits.ManageChannels)) {

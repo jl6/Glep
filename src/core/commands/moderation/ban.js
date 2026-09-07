@@ -1,10 +1,12 @@
-const { PermissionFlagsBits } = require('discord.js');
-const db = require('../../../../database/moderation');
+const path = require('path');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const db = require(path.join(process.cwd(), 'database', 'moderation'));
+const { sendLog } = require(path.join(process.cwd(), 'src', 'utils', 'logHandler.js'));
 
 module.exports = {
     name: 'ban',
     description: 'Ban a member from the server',
-    usage:'@user [reason]',
+    usage: '@user [reason]',
     async execute(msg, args) {
         if (!msg.member.permissions.has(PermissionFlagsBits.BanMembers)) {
             return msg.reply('Missing permissions');
@@ -41,6 +43,13 @@ module.exports = {
                 if (err) console.error('Failed to log ban:', err);
             });
         }
+
+        const embed = new EmbedBuilder()
+            .setTitle('User Banned')
+            .setDescription(`**User:** <@${member.id}> (${member.user.tag})\n**Moderator:** <@${msg.author.id}>\n**Reason:** ${reason}`)
+            .setColor(0xff0000)
+            .setTimestamp();
+        await sendLog(msg.guild, 'ban', embed);
 
         msg.channel.send('User banned');
     }

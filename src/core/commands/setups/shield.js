@@ -1,6 +1,6 @@
+const path = require('path');
 const { PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const Database = require('better-sqlite3');
-const path = require('path');
 
 const db = new Database(path.join(process.cwd(), 'database', 'data.db'));
 
@@ -13,13 +13,16 @@ db.exec(`
     );
 `);
 
-const buildEmbed = (data) => {
+const buildEmbed = (shieldData, logData) => {
+    const shieldLogStatus = logData ? (logData.shield_logs ? 'ENABLED' : 'DISABLED') : 'DISABLED (No Setup)';
+
     return new EmbedBuilder()
         .setTitle('Shield Configuration')
         .addFields(
-            { name: 'Anti Links', value: data.antilinks ? 'ENABLED' : 'DISABLED', inline: true },
-            { name: 'Anti Spam', value: data.antispam ? 'ENABLED' : 'DISABLED', inline: true },
-            { name: 'Anti Images', value: data.antiimages ? 'ENABLED' : 'DISABLED', inline: true }
+            { name: 'Anti Links', value: shieldData.antilinks ? 'ENABLED' : 'DISABLED', inline: true },
+            { name: 'Anti Spam', value: shieldData.antispam ? 'ENABLED' : 'DISABLED', inline: true },
+            { name: 'Anti Images', value: shieldData.antiimages ? 'ENABLED' : 'DISABLED', inline: true },
+            { name: 'Shield Logs', value: shieldLogStatus, inline: false }
         )
         .setColor(0x2b2d31);
 };
@@ -28,15 +31,15 @@ const buildRow = (data) => {
     return new ActionRowBuilder().addComponents(
         new ButtonBuilder()
             .setCustomId('toggle_antilinks')
-            .setLabel(data.antilinks ? 'ON' : 'OFF')
+            .setLabel(`Anti-Links: ${data.antilinks ? 'ON' : 'OFF'}`)
             .setStyle(data.antilinks ? ButtonStyle.Danger : ButtonStyle.Success),
         new ButtonBuilder()
             .setCustomId('toggle_antispam')
-            .setLabel(data.antispam ? 'ON' : 'OFF')
+            .setLabel(`Anti-Spam: ${data.antispam ? 'ON' : 'OFF'}`)
             .setStyle(data.antispam ? ButtonStyle.Danger : ButtonStyle.Success),
         new ButtonBuilder()
             .setCustomId('toggle_antiimages')
-            .setLabel(data.antiimages ? 'ON' : 'OFF')
+            .setLabel(`Anti-Images: ${data.antiimages ? 'ON' : 'OFF'}`)
             .setStyle(data.antiimages ? ButtonStyle.Danger : ButtonStyle.Success)
     );
 };
@@ -45,10 +48,10 @@ module.exports = {
     name: 'aspam',
     description: 'Configure server security filters',
     usage: '',
-   
+
     async execute(msg, args) {
         if (!msg.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-            return msg.reply('Missing Manage Server permissions.');
+            return msg.reply('Missing permissions.');
         }
 
         let row = db.prepare('SELECT * FROM guild_shield WHERE guild_id = ?').get(msg.guild.id);
@@ -57,8 +60,10 @@ module.exports = {
             row = { guild_id: msg.guild.id, antilinks: 0, antispam: 0, antiimages: 0 };
         }
 
+        let logConf = db.prepare('SELECT shield_logs FROM guild_logs WHERE guild_id = ?').get(msg.guild.id);
+
         const res = await msg.reply({
-            embeds: [buildEmbed(row)],
+            embeds: [buildEmbed(row, logConf)],
             components: [buildRow(row)]
         });
 
@@ -79,14 +84,14 @@ module.exports = {
                 db.prepare('UPDATE guild_shield SET antiimages = ? WHERE guild_id = ?').run(row.antiimages, msg.guild.id);
             }
 
+            logConf = db.prepare('SELECT shield_logs FROM guild_logs WHERE guild_id = ?').get(msg.guild.id);
+
             await i.update({
-                embeds: [buildEmbed(row)],
+                embeds: [buildEmbed(row, logConf)],
                 components: [buildRow(row)]
             });
         });
 
-        collector.on('end', () => {
-            res.edit({ components: [] }).catch(() => {});
-        });
+        collector.on('end', () => res.edit({ components: [] }).catch(() => {}));
     }
 };

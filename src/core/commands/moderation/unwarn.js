@@ -1,5 +1,7 @@
-const { PermissionFlagsBits } = require('discord.js');
-const db = require('../../../../database/moderation');
+const path = require('path');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const db = require(path.join(process.cwd(), 'database', 'moderation'));
+const { sendLog } = require(path.join(process.cwd(), 'src', 'utils', 'logHandler.js'));
 
 module.exports = {
     name: 'unwarn',
@@ -23,7 +25,7 @@ module.exports = {
             return msg.reply('Invalid warning count');
         }
 
-        const reasonStartIndex = removeAll ? 2 : 2;
+        const reasonStartIndex = 2;
         const reason = args.slice(reasonStartIndex).join(' ') || 'No reason provided';
 
         const selectQuery = removeAll 
@@ -32,32 +34,7 @@ module.exports = {
         
         const selectParams = removeAll ? [msg.guild.id, member.id] : [msg.guild.id, member.id, removeCount];
 
-        if (typeof db.all === 'function') {
-            db.all(selectQuery, selectParams, (err, rows) => {
-                if (err || !rows || rows.length === 0) {
-                    return msg.reply('Failed to remove warnings');
-                }
-
-                const ids = rows.map(r => r.id);
-                const placeholders = ids.map(() => '?').join(',');
-                const deleteQuery = `DELETE FROM warns WHERE id IN (${placeholders})`;
-
-                db.run(deleteQuery, ids, (delErr) => {
-                    if (delErr) {
-                        return msg.reply('Failed to remove warnings');
-                    }
-
-                    const logQuery = 'INSERT INTO unwarns (guild_id, user_id, moderator_id, count, reason, created_at) VALUES (?, ?, ?, ?, ?, ?)';
-                    const logParams = [msg.guild.id, member.id, msg.author.id, ids.length, reason, Date.now()];
-                    
-                    db.run(logQuery, logParams, (logErr) => {
-                        if (logErr) console.error('Failed to log unwarn:', logErr);
-                    });
-
-                    msg.channel.send(`Removed ${ids.length} warnings`);
-                });
-            });
-        } else if (typeof db.prepare === 'function') {
+        if (typeof db.prepare === 'function') {
             try {
                 const stmt = db.prepare(selectQuery);
                 const rows = removeAll ? stmt.all(msg.guild.id, member.id) : stmt.all(msg.guild.id, member.id, removeCount);
@@ -74,6 +51,13 @@ module.exports = {
                 db.prepare(
                     'INSERT INTO unwarns (guild_id, user_id, moderator_id, count, reason, created_at) VALUES (?, ?, ?, ?, ?, ?)'
                 ).run(msg.guild.id, member.id, msg.author.id, ids.length, reason, Date.now());
+
+                const embed = new EmbedBuilder()
+                    .setTitle('Warnings Removed')
+                    .setDescription(`**User:** <@${member.id}>\n**Moderator:** <@${msg.author.id}>\n**Warnings Removed:** ${ids.length}\n**Reason:** ${reason}`)
+                    .setColor(0x00ffff)
+                    .setTimestamp();
+                await sendLog(msg.guild, 'unwarn', embed);
 
                 msg.channel.send(`Removed ${ids.length} warnings`);
             } catch (err) {

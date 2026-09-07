@@ -1,10 +1,12 @@
-const { PermissionFlagsBits } = require('discord.js');
-const db = require('../../../../database/moderation');
+const path = require('path');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const db = require(path.join(process.cwd(), 'database', 'moderation'));
+const { sendLog } = require(path.join(process.cwd(), 'src', 'utils', 'logHandler.js'));
 
 module.exports = {
     name: 'unban',
     description: 'Unban a user from the server',
-    usage:'userID [reason]',
+    usage: 'userID [reason]',
 
     async execute(msg, args) {
         if (!msg.member.permissions.has(PermissionFlagsBits.BanMembers)) {
@@ -38,6 +40,13 @@ module.exports = {
                 if (err) console.error('Failed to log unban:', err);
             });
         }
+
+        const embed = new EmbedBuilder()
+            .setTitle('User Unbanned')
+            .setDescription(`**User ID:** ${userId}\n**Moderator:** <@${msg.author.id}>\n**Reason:** ${reason}`)
+            .setColor(0x00ff00)
+            .setTimestamp();
+        await sendLog(msg.guild, 'unban', embed);
 
         msg.channel.send('User unbanned');
     }

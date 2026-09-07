@@ -1,6 +1,7 @@
 const Database = require('better-sqlite3');
 const path = require('path');
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { sendLog } = require('../utils/logHandler');
 
 const db = new Database(path.join(process.cwd(), 'database', 'data.db'));
 
@@ -23,6 +24,14 @@ async function checkShield(msg) {
 
     if (row.antilinks && linkRegex.test(msg.content)) {
         if (msg.deletable) await msg.delete().catch(() => {});
+        
+        const embed = new EmbedBuilder()
+            .setTitle('Shield Violation: Anti-Link')
+            .setDescription(`**User:** <@${msg.author.id}>\n**Channel:** <#${msg.channel.id}>\n**Content:** ${msg.content.slice(0, 200)}`)
+            .setColor(0x2b2d31)
+            .setTimestamp();
+        await sendLog(msg.guild, 'shield', embed);
+
         return true;
     }
 
@@ -36,6 +45,14 @@ async function checkShield(msg) {
 
         if (recent.length > 3) {
             if (msg.deletable) await msg.delete().catch(() => {});
+            
+            const embed = new EmbedBuilder()
+                .setTitle('Shield Violation: Anti-Spam')
+                .setDescription(`**User:** <@${msg.author.id}>\n**Channel:** <#${msg.channel.id}>`)
+                .setColor(0x2b2d31)
+                .setTimestamp();
+            await sendLog(msg.guild, 'shield', embed);
+
             return true;
         }
     }
@@ -52,6 +69,14 @@ async function checkShield(msg) {
 
             if (recent.length > 3) {
                 if (msg.deletable) await msg.delete().catch(() => {});
+                
+                const embed = new EmbedBuilder()
+                    .setTitle('Shield Violation: Anti-Image Spam')
+                    .setDescription(`**User:** <@${msg.author.id}>\n**Channel:** <#${msg.channel.id}>`)
+                    .setColor(0x2b2d31)
+                    .setTimestamp();
+                await sendLog(msg.guild, 'shield', embed);
+
                 return true;
             }
         }
