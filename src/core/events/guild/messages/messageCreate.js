@@ -1,5 +1,6 @@
 const { checkShield } = require('../../../../utils/shieldHandler');
 const { checkSelfBot } = require('../../../../utils/selfbotHandler');
+const { checkAutoRespond } = require('../../../../utils/autorespondHandler');
 const { handleCommand } = require('../../../../utils/commandHandler');
 const { handleCustomCommand } = require('../../../../utils/costumecHandler');
 const { checkSticky } = require('../../../../utils/stickyHandler');
@@ -12,6 +13,7 @@ module.exports = {
         if (!msg.guild || msg.author.bot) return;
         if (await checkShield(msg)) return;
         if (await checkSelfBot(msg)) return;
+        if (await checkAutoRespond(msg)) return;
         await checkSticky(msg);
         await afkHandler(msg);
         await levelingHandler(msg);

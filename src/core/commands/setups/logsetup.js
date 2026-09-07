@@ -52,6 +52,7 @@ const buildRows = (conf) => {
 module.exports = {
     name: 'logsetup',
     description: 'Configure audit and security logging channels',
+    usage: '',
     async execute(msg, args) {
         if (!msg.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
             return msg.reply('Missing permissions.');
