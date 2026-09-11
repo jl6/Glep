@@ -4,7 +4,7 @@ const path = require('path');
 const IGNORE = [
     'node_modules', '.git', '.DS_Store', 'package-lock.json', 
     'package.json', 'notes.txt', '.env', '.gitignore', 
-    'README.md', 'notes', 'LICENSE'
+    'README.md', 'notes', 'LICENSE', 'dcuo', 'dev'
 ];
 
 function walk(dir, prefix = '') {
