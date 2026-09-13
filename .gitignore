@@ -1,7 +1,6 @@
 # BOT
-*.DS_Store
+*.DS_Stores
 *notes/
 *.env
 *.txt
 *.db
-
