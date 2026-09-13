@@ -6,6 +6,7 @@ const { handleCustomCommand } = require('../../../../utils/costumecHandler');
 const { checkSticky } = require('../../../../utils/stickyHandler');
 const afkHandler = require('../../../../utils/afkHandler');
 const levelingHandler = require('../../../../utils/levelingHandler');
+const { checkUserIdLookup } = require('../../../../utils/useridHandler');
 
 module.exports = {
     name: 'messageCreate',
@@ -14,6 +15,7 @@ module.exports = {
         if (await checkShield(msg)) return;
         if (await checkSelfBot(msg)) return;
         if (await checkAutoRespond(msg)) return;
+        if (await checkUserIdLookup(msg)) return;
         await checkSticky(msg);
         await afkHandler(msg);
         await levelingHandler(msg);
