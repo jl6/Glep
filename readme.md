@@ -11,7 +11,7 @@ A simple Discord utility bot designed for running 24/7 on a Raspberry Pi.
 ## Features
 
 - **Custom Prefixes:** Traditional command handling that can be changed to fit your server's needs.
-- **Moderation & Anti Spam:** Essential moderation commands (ban, kick, warn, unban) paired with automated security shields for filtering links, spam, and media.
+- **Moderation & Anti Spam:** Essential moderation commands (ban, kick, warn, unban) paired with automated for filtering links, spam, and media.
 - **Logs System:** Log all moderation actions can be set to log everything together or separate.
 - **Welcome System:** Configurable canvas welcome cards, plain text greetings, leave notices, and direct message alerts managed through interactive setup buttons.
 - **Verification System:** Button based access gating CAPTCHAs utilizing random alphanumeric and symbol strings to prevent automated bot spam.
