@@ -11,9 +11,8 @@ jobs:
       - name: Pull Latest Code Safely
         run: |
           cd ~/Glep
-          git stash
+          git reset --hard HEAD
           git pull origin main
-          git stash pop || true
           npm install
 
       - name: Restart or Start Bot with PM2
