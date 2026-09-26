@@ -16,6 +16,8 @@ jobs:
           git stash pop || true
           npm install
 
-      - name: Restart Bot with PM2
+      - name: Restart or Start Bot with PM2
         run: |
-          pm2 restart glep-bot
+          cd ~/Glep
+          pm2 restart glep-bot || pm2 start src/index.js --name "glep-bot"
+          pm2 save
